@@ -1,0 +1,18 @@
+{
+  "name": "series-portal-moviedb",
+  "version": "1.0.0",
+  "description": "Portal de séries com integração com a API do The Movie DB",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "Kayke Emanoel",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.17.1",
+    "json-server": "^0.17.4"
+  }
+}

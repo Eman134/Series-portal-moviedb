@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>134FLIX | Explorador</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="img/icon.png" type="image/x-icon">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <div class="d-flex justify-content-between w-150">
+                        <a class="navbar-brand" href="index.html">
+                            <img src="./img/logo-sem-fundo.png" alt="Logo 134FLIX" width="30%">
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="index.html"><i class="fas fa-home"></i> Início</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="explorer.html"><i class="fas fa-search text-primary"></i> Explorador</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>        
+            
+        <main>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h1 class="mt-5">O que você quer assistir hoje?</h1>
+                        <form class="d-flex justify-content-center mt-4">
+                            <input class="form-control me-2" type="search" placeholder="Procure por séries, gêneros, duracão, idioma, elenco..." aria-label="Search">
+                            <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <aside class="col-md-3">
+                        <div class="border p-3">
+                            <h5>Filtros de Pesquisa</h5>
+                            <form>
+                                <div class="mb-3">
+                                    <label for="genreSelect" class="form-label">Gênero</label>
+                                    <select class="form-select" id="genreSelect">
+                                        <option value="">Todos os Gêneros</option>
+                                        <option value="acao">Ação</option>
+                                        <option value="aventura">Aventura</option>
+                                        <option value="comedia">Comédia</option>
+                                        <option value="drama">Drama</option>
+                                        <option value="terror">Terror</option>
+                                        <option value="ficcao">Ficção Científica</option>
+                                        <option value="fantasia">Fantasia</option>
+                                        <option value="misterio">Mistério</option>
+                                        <option value="romance">Romance</option>
+                                        <option value="documentario">Documentário</option>
+                                        <option value="thriller">Thriller</option>
+                                        <option value="biografia">Biografia</option>
+                                        <option value="policial">Policial</option>
+                                        <option value="historico">Histórico</option>
+                                        <option value="terror_psicologico">Terror Psicológico</option>
+                                        <option value="sitcom">Sitcom</option>
+                                        <option value="reality_show">Reality Show</option>
+                                        <option value="fantasia_epica">Fantasia Épica</option>
+                                        <option value="drama_medico">Drama Médico</option>
+                                        <option value="ficcao_criminal">Ficção Criminal</option>
+                                        <option value="aventura_misterio">Aventura de Mistério</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="languageSelect" class="form-label">Idioma</label>
+                                    <select class="form-select" id="languageSelect">
+                                        <option value="">Selecione um idioma</option>
+                                        <option value="ingles">Inglês</option>
+                                        <option value="espanhol">Espanhol</option>
+                                        <option value="frances">Francês</option>
+                                        <option value="portugues">Português</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="ratingSelect" class="form-label">Avaliação</label>
+                                    <select class="form-select" id="ratingSelect">
+                                        <option value="">Selecione uma avaliação</option>
+                                        <option value="acima_7">Acima de 7</option>
+                                        <option value="acima_8">Acima de 8</option>
+                                        <option value="acima_9">Acima de 9</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="castInput" class="form-label">Elenco</label>
+                                    <input type="text" class="form-control" id="castInput" placeholder="Digite o nome do ator/atriz">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Filtrar</button>
+                            </form>
+                        </div>
+                    </aside>
+                    
+        
+                    <div class="col-md-9">
+                        <div class="row row-cols-1 row-cols-md-3 g-4">
+                            <div class="col">
+                                <div class="card h-100">
+                                    <img src="img/alice-in-borderland.webp" class="img-fluid" alt="Imagem da Série">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Alice in Borderland</h5>
+
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="me-2">
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="far fa-star text-warning"></i>
+                                            </div>
+                                            <small>4.0 (5 avaliações)</small>
+                                        </div>
+
+                                        <div class="d-flex p-1 flex-wrap gap-2">
+                                            <span class="badge bg-danger">+16</span>
+                                            <span class="badge bg-danger">Violência extrema</span>
+                                            <span class="badge bg-primary">Ação</span>
+                                            <span class="badge bg-secondary">Aventura</span>
+                                            <span class="badge bg-info">Ficção Científica</span>
+                                        </div>
+                                        <p class="card-text">Alice in Borderland é uma adaptação live-action do mangá homônimo. A série conta a história de um grupo de jovens que são transportados para uma Tóquio distópica e desabitada, onde são obrigados a participar de jogos mortais para sobreviver. 
+                                        <br>
+                                        A série é repleta de mistérios, reviravoltas e temas universais como sobrevivência, moralidade, amizade, destino, amor e futuro.
+                                        </p>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-between">
+                                        <a class="btn d-block mx-auto">
+                                            <i class="fas fa-heart fs-5 text-danger"></i>
+                                            Favoritado
+                                        </a>
+                                        <a class="btn d-block mx-auto">
+                                            <i class="far fa-eye fs-5"></i>
+                                            Assistir
+                                        </a>
+                                        <a class="btn d-block mx-auto" href="serie.html">
+                                            <i class="fas fa-info-circle fs-5"></i>
+                                            Detalhes
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100">
+                                    <img src="img/stranger-things.jpg" class="img-fluid" alt="Imagem da Série">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Stranger Things</h5>
+                            
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="me-2">
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star-half-alt text-warning"></i>
+                                            </div>
+                                            <small>4.5 (10 avaliações)</small>
+                                        </div>
+                            
+                                        <div class="d-flex p-1 flex-wrap gap-2">
+                                            <span class="badge bg-danger">+14</span>
+                                            <span class="badge bg-dark">Fantasia</span>
+                                            <span class="badge bg-info">Drama</span>
+                                            <span class="badge bg-warning text-dark">Terror</span>
+                                            <span class="badge bg-light text-dark">Mistério</span>
+                                        </div>
+                                        <p class="card-text">Ambientada na década de 1980, Stranger Things segue a vida de um grupo de crianças que encontram uma jovem com poderes sobrenaturais enquanto tentam desvendar o desaparecimento de um de seus amigos. A série mistura elementos de ficção científica, terror e nostalgia dos anos 80.</p>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-between">
+                                        <a class="btn d-block mx-auto">
+                                            <i class="far fa-heart fs-5"></i>
+                                            Favoritar
+                                        </a>
+                                        <a class="btn d-block mx-auto">
+                                            <i class="far fa-eye fs-5"></i>
+                                            Assistir
+                                        </a>
+                                        <a class="btn d-block mx-auto" href="serie.html">
+                                            <i class="fas fa-info-circle fs-5"></i>
+                                            Detalhes
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100">
+                                    <img src="img/the-100.jpg" class="img-fluid" alt="Imagem da Série">
+                                    <div class="card-body">
+                                        <h5 class="card-title">The 100</h5>
+                            
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="me-2">
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="far fa-star text-warning"></i>
+                                            </div>
+                                            <small>4.0 (6 avaliações)</small>
+                                        </div>
+                            
+                                        <div class="d-flex p-1 flex-wrap gap-2">
+                                            <span class="badge bg-danger">+16</span>
+                                            <span class="badge bg-info">Drama</span>
+                                            <span class="badge bg-primary">Ficção Científica</span>
+                                            <span class="badge bg-secondary">Aventura</span>
+                                            <span class="badge bg-warning text-dark">Terror</span>
+                                        </div>
+                                        <p class="card-text">Após um apocalipse nuclear, os remanescentes da humanidade vivem em uma estação espacial. Quando os recursos se esgotam, 100 jovens são enviados à Terra para determinar se o planeta é habitável novamente, enfrentando desafios e conflitos enquanto tentam sobreviver.</p>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-between">
+                                        <a class="btn d-block mx-auto">
+                                            <i class="fas fa-heart fs-5 text-danger"></i>
+                                            Favoritado
+                                        </a>
+                                        <a class="btn d-block mx-auto">
+                                            <i class="far fa-eye fs-5"></i>
+                                            Assistir
+                                        </a>
+                                        <a class="btn d-block mx-auto" href="serie.html">
+                                            <i class="fas fa-info-circle fs-5"></i>
+                                            Detalhes
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>                            
+                            <div class="col">
+                                <div class="card h-100">
+                                    <img src="img/breaking-bad.webp" class="img-fluid" alt="Imagem da Série">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Breaking Bad</h5>
+                            
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="me-2">
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                            </div>
+                                            <small>5.0 (20 avaliações)</small>
+                                        </div>
+                            
+                                        <div class="d-flex p-1 flex-wrap gap-2">
+                                            <span class="badge bg-warning">+18</span>
+                                            <span class="badge bg-primary">Policial</span>
+                                            <span class="badge bg-secondary">Drama Médico</span>
+                                            <span class="badge bg-success">Ficção Criminal</span>
+                                            <span class="badge bg-dark">Terror Psicológico</span>
+                                        </div>
+                                        <p class="card-text">A série acompanha Walter White, um professor de química que, após ser diagnosticado com câncer terminal, decide fabricar e vender metanfetamina para garantir o futuro financeiro de sua família. A trama é uma jornada sombria sobre poder, moralidade e consequências.</p>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-between">
+                                        <a class="btn d-block mx-auto">
+                                            <i class="far fa-heart fs-5"></i>
+                                            Favoritar
+                                        </a>
+                                        <a class="btn d-block mx-auto">
+                                            <i class="far fa-eye fs-5"></i>
+                                            Assistir
+                                        </a>
+                                        <a class="btn d-block mx-auto" href="serie.html">
+                                            <i class="fas fa-info-circle fs-5"></i>
+                                            Detalhes
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100">
+                                    <img src="img/the-crown.jpg" class="img-fluid" alt="Imagem da Série">
+                                    <div class="card-body">
+                                        <h5 class="card-title">The Crown</h5>
+                            
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="me-2">
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="far fa-star text-warning"></i>
+                                            </div>
+                                            <small>4.0 (8 avaliações)</small>
+                                        </div>
+                            
+                                        <div class="d-flex p-1 flex-wrap gap-2">
+                                            <span class="badge bg-info">Biografia</span>
+                                            <span class="badge bg-primary">Policial</span>
+                                            <span class="badge bg-secondary">Histórico</span>
+                                            <span class="badge bg-light text-dark">Drama Médico</span>
+                                        </div>
+                                        <p class="card-text">The Crown conta a história do reinado da Rainha Elizabeth II desde seus primeiros dias como monarca, explorando eventos políticos, pessoais e escândalos que moldaram a família real britânica ao longo das décadas.</p>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-between">
+                                        <a class="btn d-block mx-auto">
+                                            <i class="far fa-heart fs-5"></i>
+                                            Favoritar
+                                        </a>
+                                        <a class="btn d-block mx-auto">
+                                            <i class="far fa-eye fs-5"></i>
+                                            Assistir
+                                        </a>
+                                        <a class="btn d-block mx-auto" href="serie.html">
+                                            <i class="fas fa-info-circle fs-5"></i>
+                                            Detalhes
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100">
+                                    <img src="img/the-mandalorian.jpg" class="img-fluid" alt="Imagem da Série">
+                                    <div class="card-body">
+                                        <h5 class="card-title">The Mandalorian</h5>
+                            
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="me-2">
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="far fa-star text-warning"></i>
+                                            </div>
+                                            <small>4.0 (7 avaliações)</small>
+                                        </div>
+                            
+                                        <div class="d-flex p-1 flex-wrap gap-2">
+                                            <span class="badge bg-warning text-dark">+12</span>
+                                            <span class="badge bg-warning text-dark">Fantasia Épica</span>
+                                            <span class="badge bg-danger">Ficção Científica</span>
+                                            <span class="badge bg-primary">Ação</span>
+                                            <span class="badge bg-secondary">Aventura</span>
+                                        </div>
+                                        <p class="card-text">A série segue um caçador de recompensas solitário, conhecido como Mandaloriano, em uma galáxia distante, após a queda do Império. Ele deve proteger uma criança especial enquanto enfrenta inimigos em um universo repleto de ação e mistério.</p>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-between">
+                                        <a class="btn d-block mx-auto">
+                                            <i class="far fa-heart fs-5"></i>
+                                            Favoritar
+                                        </a>
+                                        <a class="btn d-block mx-auto">
+                                            <i class="far fa-eye fs-5"></i>
+                                            Assistir
+                                        </a>
+                                        <a class="btn d-block mx-auto" href="serie.html">
+                                            <i class="fas fa-info-circle fs-5"></i>
+                                            Detalhes
+                                        </a>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </main>
+        
+        <footer class="bg-light text-center text-lg-start mt-3">
+            <div class="text-center p-3 bg-light">
+                © 2024 Desenvolvido por <a href="https://www.linkedin.com/in/kaykeeman/" target="_blank"><i class="fab fa-linkedin"></i> Kayke Emanoel</a>. Visualize este projeto no <a href="https://github.com/Eman134/learningsomethings/tree/main/FRONTEND-PROJECTS/Responsive-series-portal" target="_blank"><i class="fab fa-github"> Meu GitHub</i></a>
+            </div>
+        </footer>
+    </body>
+</html>
