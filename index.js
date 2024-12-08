@@ -24,7 +24,9 @@ async function carregarGeneros() {
               Authorization: `Bearer ${ACCESS_TOKEN}`,
             }
         });
-        genres.push(...response.data.genres);
+        if (genres.length == 0) {
+            genres.push(...response.data.genres);
+        }
     } catch (error) {
         console.error(error);
     }
@@ -61,7 +63,7 @@ server.get('/api/buscar-series/:query', async (req, res) => {
 
     const series = [];
     const maxResults = 30;
-    const maxPages = 500;
+    const maxPages = 5;
     let currentPage = 1; 
 
     console.log(`Buscando a série com o termo ${query}, filtro rating: ${rating}, filtro gênero: ${genre}`);
@@ -80,13 +82,13 @@ server.get('/api/buscar-series/:query', async (req, res) => {
             const response = await axios.request({ ...options, url: `${options.url}&page=${currentPage}` });
             const data = response.data;
 
-            for (const serie of data.results) {
-                serie.genres_names = [];
-                for (const genreId of serie.genre_ids) {
+            await data.results.forEach(async serie => {
+                serie.genres = []
+                await serie.genre_ids.forEach(async genreId => {
                     const nome = await nomeGenero(genreId);
-                    serie.genres_names.push(nome);
-                }
-            }
+                    serie.genres.push({ id: genreId, name: nome });
+                })
+            });
 
             const filteredResults = data.results.filter(serie => {
                 const meetsRating = !rating || checkRating(serie.vote_average, rating);
@@ -229,5 +231,5 @@ server.get('/api/serie/:id/temporada/:temporada', async (req, res) => {
 server.use('/db', router);
 
 server.listen(3000, () => {
-  console.log('JSON Server está em execução!')
+    console.log('Servidor rodando na porta 3000, acesse: http://localhost:3000')
 })

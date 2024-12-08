@@ -75,10 +75,23 @@ $(document).ready(function() {
             serie.genres = [];
         }
 
+        let favoritado = false;
+        $.ajax({
+            url: FAVORITES_URL,
+            method: 'GET',
+            async: false,
+            success: function(favorites) {
+                favoritado = favorites.some(favorite => favorite.serie_id === serie.id && favorite.user_id === USER_ID);
+            },
+            error: function() {
+                console.error('Erro ao verificar favoritos.');
+            }
+        });
+
         const cardHTML = `
                         <div class="col">
                             <div class="card h-100">
-                                <img src="https://image.tmdb.org/t/p/w500${serie.poster_path}" class="img-fluid" alt="Imagem da Série" style="max-width: 300px; margin: 0 auto;">
+                                <img src="${serie.poster_path == null ? "https://via.placeholder.com/300" : `https://image.tmdb.org/t/p/w500${serie.poster_path}`}" class="img-fluid" alt="Imagem da Série" style="max-width: 300px; margin: 0 auto;">
                                 <div class="card-body">
                                     <h5 class="card-title">${serie.name}</h5>
                                     <div class="d-flex align-items-center mb-2">
@@ -99,10 +112,10 @@ $(document).ready(function() {
                                     <p class="card-text">${serie.overview}</p>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between">
-                                    <a class="btn d-block mx-auto favorite-btn" data-id="${serie.id}" data-name="${serie.name}">
-                                        <i class="far fa-heart fs-5"></i>
-                                        Favoritar
-                                    </a>
+                                    <button class="btn favorite-btn" data-id="${serie.id}" data-name="${serie.name}">
+                                        <i class="${favoritado ? 'fas' : 'far'} fa-heart fs-5 ${favoritado ? 'text-danger' : ''}"></i>
+                                        ${favoritado ? 'Favoritado' : 'Favoritar'}
+                                    </button>
                                     <a class="btn d-block mx-auto" href="serie.html?id=${serie.id}">
                                         <i class="fas fa-info-circle fs-5"></i>
                                         Detalhes
@@ -306,7 +319,7 @@ $(document).ready(function() {
             success: function(response) {
                 const serie = response;
                 console.log(serie);
-                const img = `https://image.tmdb.org/t/p/w300${serie.poster_path}`
+                const img = serie.poster_path == null ? 'https://via.placeholder.com/200' : `https://image.tmdb.org/t/p/w300${serie.poster_path}`
                 $('#serieImg').attr('src', img);
                 $('#serieNome').text(serie.name);
                 
@@ -329,7 +342,6 @@ $(document).ready(function() {
                     </div>
                 `);
 
-                // #serieAudioOriginal e #serieDataLancamento
                 $('#serieAudioOriginal').text(`Áudio original: ${serie.original_language}`);
                 $('#serieDataLancamento').text(`Data de lançamento: ${serie.first_air_date.split('-').reverse().join('/')}`);
                 
@@ -353,7 +365,7 @@ $(document).ready(function() {
                                 <img src="${img}" class="card-img-top" alt="${cast.name}">
                                 <div class="card-body">
                                     <h5 class="card-title">${cast.name}</h5>
-                                    <p class="card-text">Personagem: ${cast.character}</p>
+                                    <p class="card-text">Personagem: ${cast.character || 'Personagem desconhecido'}</p>
                                 </div>
                             </div>
                         </div>
@@ -395,16 +407,10 @@ $(document).ready(function() {
                                 </div>
                             `;
                             $('#serieTemporadas').append(accordion);
-                        }
+                        },
+                        async: false,
                     });
-                }).then(() => {
-                    $('#serieTemporadas').html($('#serieTemporadas').children().sort((a, b) => {
-                        const numA = $(a).find('.accordion-button').text().split(' ')[1];
-                        const numB = $(b).find('.accordion-button').text().split(' ')[1];
-                        return numA - numB;
-                    }))
                 })
-                
 
             },
             error: function() {
