@@ -59,13 +59,56 @@ async function nomeGenero(id) {
     return genres.find(genre => genre.id === id).name;
 }
 
+// teste de rota http://localhost:3000/api/generos
+server.get('/api/generos', async (req, res) => {
+    if (genres.length === 0) {
+        await carregarGeneros();
+    }
+    res.json(genres);
+});
+
+// https://api.themoviedb.org/3/search/tv?language=pt-BR&query=serie&page=1
+// teste de rota http://localhost:3000/api/buscar-series/serie
+server.get('/api/buscar-series/:query', async (req, res) => {
+    const query = req.params.query;
+    if (!query || query === '') {
+        res.status(400).json({ message: 'O termo de busca é obrigatório' });
+        return;
+    }
+    console.log(`Buscando a série com o termo ${query}`);
+    const options = {
+        method: 'GET',
+        url: `${THE_MOVIE_DB_API_URL}/search/tv?language=pt-BR&query=${query}&page=1`,
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        }
+    };
+    try {
+        const response = await axios.request(options);
+        const data = response.data;
+        await data.results.forEach(async serie => {
+            serie.genres_names = [];
+            serie.genre_ids.forEach(async genreId => {
+                const nome = await nomeGenero(genreId);
+                serie.genres_names.push(nome);
+            })
+        });
+        res.json(data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao buscar a série' });
+    }
+});
+
 // https://api.themoviedb.org/3/tv/popular?language=pt-BR&page=1
 // teste de rota http://localhost:3000/api/series-populares
+// mudar para https://api.themoviedb.org/3/tv/top_rated
 server.get('/api/series-populares', async (req, res) => {
     console.log('Recuperando as séries populares...');
     const options = {
         method: 'GET',
-        url: `${THE_MOVIE_DB_API_URL}/tv/popular?language=pt-BR&page=1`,
+        url: `${THE_MOVIE_DB_API_URL}/tv/top_rated?language=pt-BR&page=1`,
         headers: {
           accept: 'application/json',
           Authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -92,6 +135,10 @@ server.get('/api/series-populares', async (req, res) => {
 // teste de rota http://localhost:3000/api/serie/1
 server.get('/api/serie/:id', async (req, res) => {
     const id = req.params.id;
+    if (!id || id === '') {
+        res.status(400).json({ message: 'O id da série é obrigatório' });
+        return;
+    }
     console.log(`Recuperando a série com id ${id}`);
     const options = {
         method: 'GET',
