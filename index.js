@@ -79,6 +79,9 @@ server.get('/api/buscar-series/:query', async (req, res) => {
     }
 
     const series = [];
+    const maxResults = 30;
+    const maxPages = 500;
+    let currentPage = 1; 
 
     console.log(`Buscando a série com o termo ${query}, filtro rating: ${rating}, filtro gênero: ${genre}`);
 
@@ -91,10 +94,9 @@ server.get('/api/buscar-series/:query', async (req, res) => {
         }
     };
 
-    // buscar em 3 páginas
-    for (let i = 1; i <= 3; i++) {
+    while (series.length < maxResults && currentPage <= maxPages) {
         try {
-            const response = await axios.request({ ...options, url: `${options.url}&page=${i}` });
+            const response = await axios.request({ ...options, url: `${options.url}&page=${currentPage}` });
             const data = response.data;
 
             for (const serie of data.results) {
@@ -105,24 +107,28 @@ server.get('/api/buscar-series/:query', async (req, res) => {
                 }
             }
 
-            // Aplica os filtros de rating e gênero
             const filteredResults = data.results.filter(serie => {
                 const meetsRating = !rating || checkRating(serie.vote_average, rating);
                 const meetsGenre = !genre || serie.genre_ids.includes(parseInt(genre, 10));
                 return meetsRating && meetsGenre;
             });
 
-            console.log(`Encontrados ${filteredResults.length} resultados na página ${i}`);
-
             series.push(...filteredResults);
+            console.log(`Adicionados ${filteredResults.length} resultados da página ${currentPage}. Total: ${series.length}`);
+
+            if (filteredResults.length === 0 && currentPage === data.total_pages) {
+                break;
+            }
+
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Erro ao buscar a série' });
+            console.error(`Erro na página ${currentPage}:`, error.message);
+            break;
         }
+
+        currentPage++;
     }
 
-    res.json({ results: series });
-
+    res.json({ results: series.slice(0, maxResults) });
 });
 
 // Função para verificar o rating

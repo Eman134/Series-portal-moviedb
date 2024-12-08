@@ -294,6 +294,7 @@ $(document).ready(function() {
         series.forEach(serie => {
             const cardHTML = getCardHTML(serie);
             $('#explorerindex').append(cardHTML);
+            $(`.favorite-btn[data-id="${serie.id}"]`).on('click', toggleFavorite);
         });
     }
 
