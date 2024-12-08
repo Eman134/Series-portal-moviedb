@@ -56,39 +56,42 @@
                     <div class="col-12 text-center">
                         <h1 class="mt-5">O que você quer assistir hoje?</h1>
                         <form class="d-flex justify-content-center mt-4" id="searchForm">
-                            <input class="form-control me-2" type="search" placeholder="Procure por séries" aria-label="Search">
+                            <input class="form-control me-2" type="search" placeholder="Procure por séries" aria-label="Search" id="searchInput">
                             <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
                         </form>
                     </div>
+                    <div class="row mt-4 justify-content-center">
+                        <form class="d-flex flex-wrap gap-3 justify-content-center" id="filterForm">
+                            <div class="mb-3">
+                                <label for="genreSelect" class="form-label">Gênero</label>
+                                <select class="form-select" id="genreSelect">
+                                    <option value="">Todos os Gêneros</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="ratingSelect" class="form-label">Avaliação</label>
+                                <select class="form-select" id="ratingSelect">
+                                    <option value="">Selecione uma avaliação</option>
+                                    <option value="acima_3">Acima de 3</option>
+                                    <option value="acima_5">Acima de 5</option>
+                                    <option value="acima_8">Acima de 8</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="orderSelect" class="form-label">Ordenar por</label>
+                                <select class="form-select" id="orderSelect">
+                                    <option value="asc">A-Z</option>
+                                    <option value="desc">Z-A</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary align-self-end" type="submit">Filtrar</button>
+                        </form>
+                    </div>
+                    
                 </div>
                 <div class="row mt-4">
-                    <aside class="col-md-3">
-                        <div class="border p-3">
-                            <h5>Filtros de Pesquisa</h5>
-                            <form>
-                                <div class="mb-3">
-                                    <label for="genreSelect" class="form-label">Gênero</label>
-                                    <select class="form-select" id="genreSelect">
-                                        <option value="">Todos os Gêneros</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="ratingSelect" class="form-label">Avaliação</label>
-                                    <select class="form-select" id="ratingSelect">
-                                        <option value="">Selecione uma avaliação</option>
-                                        <option value="acima_1">Acima de 1</option>
-                                        <option value="acima_3">Acima de 3</option>
-                                        <option value="acima_4">Acima de 4</option>
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Filtrar</button>
-                            </form>
-                        </div>
-                    </aside>
-                    
-        
-                    <div class="col-md-9">
-                        <div class="row row-cols-1 row-cols-md-3 g-4" id="explorerindex">
+                    <div class="col-md-12">
+                        <div class="row row-cols-1 row-cols-md-4 g-4" id="explorerindex">
                         </div>
                     </div>
                 </div>

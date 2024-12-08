@@ -262,20 +262,20 @@ $(document).ready(function() {
     function fetchSeriesWithFilters() {
         const genre = $('#genreSelect').val();
         const rating = $('#ratingSelect').val();
-        const query = $('input[type="search"]').val();
-    
-        let url = `${API_URL}/buscar-series?genre=${genre}&rating=${rating}`;
+        const query = $('input[type="search"]').val() || 'a';
+        let url = `${API_URL}/buscar-series/${query}`;
+        if (genre) {
+            url += `?genre=${genre}`;
+        }
+        if (rating) {
+            url += genre ? `&rating=${rating}` : `?rating=${rating}`;
+        }
     
         $.ajax({
-            url: `${url}/${query}`,
+            url,
             method: 'GET',
             success: function(response) {
-                const filteredSeries = response.results.filter(serie => {
-                    const meetsRating = rating ? serie.vote_average >= rating : true;
-                    return meetsRating;
-                });
-    
-                displayExplorerCards(filteredSeries);
+                displayExplorerCards(response.results);
             },
             error: function() {
                 console.error('Erro ao carregar séries com filtros.');
@@ -298,10 +298,16 @@ $(document).ready(function() {
     }
 
     $('#searchForm').on('submit', function(event) {
-        console.log('submit');
         event.preventDefault();
         fetchSeriesWithFilters();
     });
+
+    $('#filterForm').on('submit', function (event) {
+        event.preventDefault();
+        fetchSeriesWithFilters();
+    });
+
+    fetchSeriesWithFilters();
 
     updateCarousel();
     mostrarNovidades();

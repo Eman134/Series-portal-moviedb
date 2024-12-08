@@ -68,38 +68,80 @@ server.get('/api/generos', async (req, res) => {
 });
 
 // https://api.themoviedb.org/3/search/tv?language=pt-BR&query=serie&page=1
-// teste de rota http://localhost:3000/api/buscar-series/serie
+// teste de rota http://localhost:3000/api/bus  car-series/serie
 server.get('/api/buscar-series/:query', async (req, res) => {
     const query = req.params.query;
+    const { rating, genre } = req.query;
+
     if (!query || query === '') {
         res.status(400).json({ message: 'O termo de busca é obrigatório' });
         return;
     }
-    console.log(`Buscando a série com o termo ${query}`);
+
+    const series = [];
+
+    console.log(`Buscando a série com o termo ${query}, filtro rating: ${rating}, filtro gênero: ${genre}`);
+
     const options = {
         method: 'GET',
-        url: `${THE_MOVIE_DB_API_URL}/search/tv?language=pt-BR&query=${query}&page=1`,
+        url: `${THE_MOVIE_DB_API_URL}/search/tv?language=pt-BR&query=${query}`,
         headers: {
-          accept: 'application/json',
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
+            accept: 'application/json',
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
         }
     };
-    try {
-        const response = await axios.request(options);
-        const data = response.data;
-        await data.results.forEach(async serie => {
-            serie.genres_names = [];
-            serie.genre_ids.forEach(async genreId => {
-                const nome = await nomeGenero(genreId);
-                serie.genres_names.push(nome);
-            })
-        });
-        res.json(data);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Erro ao buscar a série' });
+
+    // buscar em 3 páginas
+    for (let i = 1; i <= 3; i++) {
+        try {
+            const response = await axios.request({ ...options, url: `${options.url}&page=${i}` });
+            const data = response.data;
+
+            for (const serie of data.results) {
+                serie.genres_names = [];
+                for (const genreId of serie.genre_ids) {
+                    const nome = await nomeGenero(genreId);
+                    serie.genres_names.push(nome);
+                }
+            }
+
+            // Aplica os filtros de rating e gênero
+            const filteredResults = data.results.filter(serie => {
+                const meetsRating = !rating || checkRating(serie.vote_average, rating);
+                const meetsGenre = !genre || serie.genre_ids.includes(parseInt(genre, 10));
+                return meetsRating && meetsGenre;
+            });
+
+            console.log(`Encontrados ${filteredResults.length} resultados na página ${i}`);
+
+            series.push(...filteredResults);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Erro ao buscar a série' });
+        }
     }
+
+    res.json({ results: series });
+
 });
+
+// Função para verificar o rating
+function checkRating(voteAverage, rating) {
+    const ratingMap = {
+        acima_0: 0,
+        acima_3: 3,
+        acima_5: 5,
+        acima_8: 8
+    };
+
+    const requiredRating = ratingMap[rating];
+    if (requiredRating === undefined) {
+        return true;
+    }
+
+    return voteAverage >= requiredRating;
+}
+
 
 // https://api.themoviedb.org/3/tv/popular?language=pt-BR&page=1
 // teste de rota http://localhost:3000/api/series-populares
