@@ -11,6 +11,7 @@
     <link rel="icon" href="img/icon.png" type="image/x-icon">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="js/series.js"></script>
+    <script src="js/autor.js"></script>
     <link rel="stylesheet" href="css/styles.css">
 </head>
     <body>
@@ -66,8 +67,7 @@
                         <div class="row mt-3">
                             <div class="col-md-8">
                                 <h5>Sobre</h5>
-                                <div class="p-3 border">
-                                    <p>Hi, my name is Kayke Emanoel, mechanical technician graduated from CEFET-MG, currently working in Structural Projects area, where i am developing my skills in AutoCad, Excel, Word and others. My work in structural projects has provided me with a solid foundation in technical design and project management. I have also spent some time studying technologies and programming languages, and i am currently studying Software Engineering at PUC. I have experience with Node.js backend, using JavaScript, TypeScript, as well as Golang and Java. Additionally, I have basic skills in frontend development.</p>
+                                <div class="p-3 border" id="sobrealuno">
                                 </div>
                             </div>
                             <div class="col-md-4" id="sobremim">
@@ -76,9 +76,9 @@
                                     <div class="media d-flex align-items-center mb-3">
                                         <img src="img/foto.png" class="mr-3 rounded-circle" alt="Foto do Aluno" width="100" height="100">
                                         <div class="media-body p-3">
-                                            <p class="mb-0"><strong>Aluno:</strong> Kayke Emanoel</p>
-                                            <p class="mb-0"><strong>Curso:</strong> Engenharia de Software</p>
-                                            <p class="mb-0"><strong>Turma:</strong> Noite</p>
+                                            <p class="mb-0" id="alunonome"><strong>Aluno:</strong> Kayke Emanoel</p>
+                                            <p class="mb-0" id="alunocurso"><strong>Curso:</strong> Engenharia de Software</p>
+                                            <p class="mb-0" id="alunoturma"><strong>Turma:</strong> Noite</p>
                                         </div>
                                     </div>
                                     <div class="mt-3">
@@ -92,94 +92,7 @@
                         </div>
                         <h2 class="mt-3">Minhas Séries:</h2>
                         <hr>
-                        <div class="row row-cols-1 row-cols-md-3 g-4">
-                            <div class="col">
-                                <div class="card h-100">
-                                    <img src="img/alice-in-borderland.webp" class="img-fluid" alt="Imagem da Série">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Alice in Borderland</h5>
-
-                                        <div class="d-flex align-items-center mb-2">
-                                            <div class="me-2">
-                                                <i class="fas fa-star text-warning"></i>
-                                                <i class="fas fa-star text-warning"></i>
-                                                <i class="fas fa-star text-warning"></i>
-                                                <i class="fas fa-star text-warning"></i>
-                                                <i class="far fa-star text-warning"></i>
-                                            </div>
-                                            <small>4.0 (5 avaliações)</small>
-                                        </div>
-
-                                        <div class="d-flex p-1 flex-wrap gap-2">
-                                            <span class="badge bg-danger">+16</span>
-                                            <span class="badge bg-danger">Violência extrema</span>
-                                            <span class="badge bg-primary">Ação</span>
-                                            <span class="badge bg-secondary">Aventura</span>
-                                            <span class="badge bg-info">Ficção Científica</span>
-                                        </div>
-                                        <p class="card-text">Alice in Borderland é uma adaptação live-action do mangá homônimo. A série conta a história de um grupo de jovens que são transportados para uma Tóquio distópica e desabitada, onde são obrigados a participar de jogos mortais para sobreviver. 
-                                        <br>
-                                        A série é repleta de mistérios, reviravoltas e temas universais como sobrevivência, moralidade, amizade, destino, amor e futuro.
-                                        </p>
-                                    </div>
-                                    <div class="card-footer d-flex justify-content-between">
-                                        <a class="btn d-block mx-auto">
-                                            <i class="fas fa-heart fs-5 text-danger"></i>
-                                            Favoritado
-                                        </a>
-                                        <a class="btn d-block mx-auto">
-                                            <i class="far fa-eye fs-5"></i>
-                                            Assistir
-                                        </a>
-                                        <a class="btn d-block mx-auto" href="serie.html">
-                                            <i class="fas fa-info-circle fs-5"></i>
-                                            Detalhes
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card h-100">
-                                    <img src="img/the-100.jpg" class="img-fluid" alt="Imagem da Série">
-                                    <div class="card-body">
-                                        <h5 class="card-title">The 100</h5>
-                            
-                                        <div class="d-flex align-items-center mb-2">
-                                            <div class="me-2">
-                                                <i class="fas fa-star text-warning"></i>
-                                                <i class="fas fa-star text-warning"></i>
-                                                <i class="fas fa-star text-warning"></i>
-                                                <i class="fas fa-star text-warning"></i>
-                                                <i class="far fa-star text-warning"></i>
-                                            </div>
-                                            <small>4.0 (6 avaliações)</small>
-                                        </div>
-                            
-                                        <div class="d-flex p-1 flex-wrap gap-2">
-                                            <span class="badge bg-danger">+16</span>
-                                            <span class="badge bg-info">Drama</span>
-                                            <span class="badge bg-primary">Ficção Científica</span>
-                                            <span class="badge bg-secondary">Aventura</span>
-                                            <span class="badge bg-warning text-dark">Terror</span>
-                                        </div>
-                                        <p class="card-text">Após um apocalipse nuclear, os remanescentes da humanidade vivem em uma estação espacial. Quando os recursos se esgotam, 100 jovens são enviados à Terra para determinar se o planeta é habitável novamente, enfrentando desafios e conflitos enquanto tentam sobreviver.</p>
-                                    </div>
-                                    <div class="card-footer d-flex justify-content-between">
-                                        <a class="btn d-block mx-auto">
-                                            <i class="fas fa-heart fs-5 text-danger"></i>
-                                            Favoritado
-                                        </a>
-                                        <a class="btn d-block mx-auto">
-                                            <i class="far fa-eye fs-5"></i>
-                                            Assistir
-                                        </a>
-                                        <a class="btn d-block mx-auto" href="serie.html">
-                                            <i class="fas fa-info-circle fs-5"></i>
-                                            Detalhes
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>  
+                        <div class="row row-cols-1 row-cols-md-3 g-4" id="minhasseries">
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,8 @@
-const API_URL = 'http://localhost:3000/api';
-
 $(document).ready(function() {
+
+    const API_URL = 'http://localhost:3000/api';
+    const FAVORITES_URL = 'http://localhost:3000/db/series_preferidas';
+    const USER_ID = 1;
 
     function updateCarousel() {
         $.ajax({
@@ -39,16 +41,14 @@ $(document).ready(function() {
         });
     }
 
-    const mapeamentoGeneros_cores = {}
+    const mapeamentoGeneros_cores = {};
 
     function mostrarNovidades() {
-        
         $.ajax({
             url: `${API_URL}/series-populares`,
             method: 'GET',
             success: function(response) {
                 const series = response.results.slice(0, 12);
-    
                 series.forEach((serie) => {
                     const cardHTML = `
                         <div class="col">
@@ -71,16 +71,12 @@ $(document).ready(function() {
                                             return `<span class="badge" style="background-color: ${cor};">${name}</span>`;
                                         }).join('')}
                                     </div>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                    <p class="card-text">${serie.overview}</p>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between">
-                                    <a class="btn d-block mx-auto">
-                                        <i class="fas fa-heart fs-5 text-danger"></i>
+                                    <a class="btn d-block mx-auto favorite-btn" data-id="${serie.id}" data-name="${serie.name}">
+                                        <i class="far fa-heart fs-5"></i>
                                         Favoritar
-                                    </a>
-                                    <a class="btn d-block mx-auto">
-                                        <i class="far fa-eye fs-5"></i>
-                                        Assistir
                                     </a>
                                     <a class="btn d-block mx-auto" href="serie.html">
                                         <i class="fas fa-info-circle fs-5"></i>
@@ -92,12 +88,16 @@ $(document).ready(function() {
                     `;
                     $('#novidadesindex').append(cardHTML);
                 });
+    
+                $('.favorite-btn').on('click', toggleFavorite);
+    
+                loadFavorites();
             },
             error: function() {
                 console.log("Erro ao carregar as séries.");
             }
         });
-
+    
         function getRandomColor() {
             const letters = '0123456789ABCDEF';
             let color = '#';
@@ -124,6 +124,74 @@ $(document).ready(function() {
             }
             return starsHTML;
         }
+    }    
+
+    function loadFavorites() {
+        $.ajax({
+            url: FAVORITES_URL,
+            method: 'GET',
+            success: function(favorites) {
+                favorites.forEach(favorite => {
+                    const favoriteButton = $(`.favorite-btn[data-id="${favorite.serie_id}"]`);
+                    favoriteButton.find('i').removeClass('far').addClass('fas');
+                    favoriteButton.html(`
+                        <i class="fas fa-heart fs-5 text-danger"></i> Favoritado
+                    `);
+                });
+            },
+            error: function() {
+                console.error('Erro ao carregar favoritos.');
+            }
+        });
+    }
+
+    function toggleFavorite() {
+        const serieId = $(this).data('id');
+        const serieName = $(this).data('name');
+        const $button = $(this);
+
+        $.ajax({
+            url: FAVORITES_URL,
+            method: 'GET',
+            success: function(favorites) {
+                const favorited = favorites.find(fav => fav.serie_id === serieId && fav.user_id === USER_ID);
+
+                if (favorited) {
+                    $.ajax({
+                        url: `${FAVORITES_URL}/${favorited.id}`,
+                        method: 'DELETE',
+                        success: function() {
+                            $button.find('i').removeClass('fas').addClass('far');
+                            $button.html(`<i class="far fa-heart fs-5 text-danger"></i> Favoritar`);
+                        },
+                        error: function() {
+                            console.error('Erro ao remover dos favoritos.');
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: FAVORITES_URL,
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            id: Date.now(),
+                            serie_id: serieId,
+                            user_id: USER_ID
+                        }),
+                        success: function() {
+                            $button.find('i').removeClass('far').addClass('fas');
+                            $button.html(`<i class="fas fa-heart fs-5 text-danger"></i> Favoritado`);
+                        },
+                        error: function() {
+                            console.error('Erro ao adicionar aos favoritos.');
+                        }
+                    });
+                }
+            },
+            error: function() {
+                console.error('Erro ao verificar favoritos.');
+            }
+        });
     }
 
     updateCarousel();

@@ -74,7 +74,6 @@ server.get('/api/series-populares', async (req, res) => {
     try {
         const response = await axios.request(options);
         const data = response.data;
-        // colocar dentro de cada série, em data.results, o nome do gênero, que está em genre_ids, e aí pegar o nome do gênero
         await data.results.forEach(async serie => {
             serie.genres_names = [];
             serie.genre_ids.forEach(async genreId => {
@@ -111,7 +110,7 @@ server.get('/api/serie/:id', async (req, res) => {
     }
 });
 
-server.use(router)
+server.use('/db', router);
 
 server.listen(3000, () => {
   console.log('JSON Server está em execução!')

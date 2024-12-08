@@ -15,6 +15,7 @@ Este projeto é um site de apresentação de séries, desenvolvido com HTML, CSS
 - **Flexbox**: Utilizado para criar layouts flexíveis e alinhamento de elementos.
 - **Grid**: Aplicado para organizar o conteúdo em grades, facilitando a exibição de séries e episódios.
 - **The Movie Database API**: Para puxar os dados dinâmicos das séries, substituindo conteúdo estático por informações reais e atualizadas.
+- **JSON Server**: Para simular uma API REST, permitindo a utilização de dados locais.
 
 ## Estrutura do Projeto
 
