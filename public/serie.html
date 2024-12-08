@@ -11,6 +11,17 @@
     <link rel="icon" href="img/icon.png" type="image/x-icon">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="js/series.js"></script>
+    <script>
+    $(document).ready(function() {
+
+        const serieId = window.location.search.split('=')[1];
+        if (!serieId) {
+            window.location = '/index.html';
+        }
+
+    });
+
+    </script>
 </head>
     <body>
         <header>
@@ -47,50 +58,25 @@
                     <h2 class="mt-3">Visão Geral:</h2>
                     <div class="card h-100 flex-wrap flex-md-row p-3 align-items-center">
                         <div>
-                            <img src="img/alice-in-borderland.webp" class="img-fluid" alt="Imagem da Série">
-                            <div class="d-flex justify-content-center mt-2 gap-2">
-                                <span class="badge bg-danger">Netflix</span>
-                            </div>
+                            <img src="" class="img-fluid" alt="Imagem da Série" id="serieImg" style="max-width: 200px;">
                         </div>
                         <div class="col">
                             <div class="card-body">
-                                <h5 class="card-title">Alice in Borderland</h5>
-
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="me-2">
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="fas fa-star text-warning"></i>
-                                        <i class="far fa-star text-warning"></i>
-                                    </div>
-                                    <small>4.0 (5 avaliações)</small>
+                                <h5 class="card-title" id="serieNome"></h5>
+                                <div class="d-flex align-items-center mb-2" id="serieStars">
                                 </div>
 
-                                <h6 class="card-subtitle mb-2 text-muted">Áudio original: Japonês</h6>
-                                <h6 class="card-subtitle mb-2 text-muted">Dublagem: Português</h6>
-                                <h6 class="card-subtitle mb-2 text-muted">Lançamento: 10/12/2020</h6>
+                                <h6 class="card-subtitle mb-2 text-muted" id="serieAudioOriginal"></h6>
+                                <h6 class="card-subtitle mb-2 text-muted" id="serieDataLancamento"></h6>
 
-                                <div class="d-flex p-1 flex-wrap gap-2">
-                                    <span class="badge bg-danger">+16</span>
-                                    <span class="badge bg-danger">Violência extrema</span>
-                                    <span class="badge bg-primary">Ação</span>
-                                    <span class="badge bg-secondary">Aventura</span>
-                                    <span class="badge bg-info">Ficção Científica</span>
+                                <div class="d-flex p-1 flex-wrap gap-2" id="serieGenres">
                                 </div>
-                                <p class="card-text">Alice in Borderland é uma adaptação live-action do mangá homônimo. A série conta a história de um grupo de jovens que são transportados para uma Tóquio distópica e desabitada, onde são obrigados a participar de jogos mortais para sobreviver. 
-                                <br>
-                                A série é repleta de mistérios, reviravoltas e temas universais como sobrevivência, moralidade, amizade, destino, amor e futuro.
+
+                                <p class="card-text" id="serieSinopse"></p>
                                 </p>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <a class="btn d-block mx-auto">
-                                    <i class="fas fa-heart fs-5 text-danger"></i>
-                                    Favoritado
-                                </a>
-                                <a class="btn d-block mx-auto" href="https://www.netflix.com/title/80200575" target="_blank">
-                                    <i class="far fa-eye fs-5"></i>
-                                    Assistir
+                                <a id="favoritarSerie">
                                 </a>
                             </div>
                         </div>
@@ -100,134 +86,14 @@
                     <hr>
 
                     <div class="row justify-content-center">
-                        <div class="row row-cols-1 row-cols-md-4 g-4">
-                            
-                            <div class="col">
-                                <div class="card h-100">
-                                    <img src="img/kento-yamazaki.webp" class="card-img-top" alt="Kento Yamazaki">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Kento Yamazaki</h5>
-                                        <p class="card-text">Personagem: Ryohei Arisu</p>
-                                        <p>Arisu é um jovem desmotivado, sem emprego e que vive à sombra de seu irmão bem-sucedido. Ele é um viciado em videogames que, junto com seus amigos, é transportado para Borderland, onde precisa lutar por sua sobrevivência em jogos mortais.</p>
-                                    </div>
-                                </div>
-                            </div>
-                    
-                            <div class="col">
-                                <div class="card h-100">
-                                    <img src="img/tao-tsuchiya.jpg" class="card-img-top" alt="Tao Tsuchiya">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Tao Tsuchiya</h5>
-                                        <p class="card-text">Personagem: Yuzuha Usagi</p>
-                                        <p>Usagi é uma alpinista habilidosa que perdeu seu pai, seu maior ídolo, durante uma expedição. Após ser transportada para Borderland, ela luta para sobreviver enquanto encontra em Arisu um aliado e um interesse amoroso.</p>
-                                    </div>
-                                </div>
-                            </div>
-                    
-                            <div class="col">
-                                <div class="card h-100">
-                                    <img src="img/nijiro-murakami.jpg" class="card-img-top" alt="Nijiro Murakami">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Nijiro Murakami</h5>
-                                        <p class="card-text">Personagem: Shuntarō Chishiya</p>
-                                        <p>Chishiya é um personagem enigmático e extremamente inteligente, com uma personalidade calculista. Ele se destaca por sua frieza e habilidade em manipular as situações para seu benefício, sendo um jogador estratégico nos desafios mortais de Borderland.</p>
-                                    </div>
-                                </div>
-                            </div>
-                    
-                            <div class="col">
-                                <div class="card h-100">
-                                    <img src="img/yuki-morinaga.jpg" class="card-img-top" alt="Yuki Morinaga">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Yuki Morinaga</h5>
-                                        <p class="card-text">Personagem: Chota Segawa</p>
-                                        <p>Chota é um dos amigos de Arisu, um jovem vulnerável e religioso que tem dificuldades em lidar com a brutalidade dos jogos de Borderland. Embora seja leal a seus amigos, sua personalidade insegura o coloca em situações difíceis.</p>
-                                    </div>
-                                </div>
-                            </div>
-                    
-                            <div class="col">
-                                <div class="card h-100">
-                                    <img src="img/aya-asahina.jpg" class="card-img-top" alt="Aya Asahina">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Aya Asahina</h5>
-                                        <p class="card-text">Personagem: Hikari Kuina</p>
-                                        <p>Kuina é uma das personagens mais habilidosas e destemidas do grupo. Ela forma uma forte amizade com Chishiya e tem um passado doloroso, o que a torna ainda mais determinada a sobreviver em Borderland.</p>
-                                    </div>
-                                </div>
-                            </div>
-                    
-                            <div class="col">
-                                <div class="card h-100">
-                                    <img src="img/keita-machida.jpg" class="card-img-top" alt="Keita Machida">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Keita Machida</h5>
-                                        <p class="card-text">Personagem: Daikichi Karube</p>
-                                        <p>Karube é um dos melhores amigos de Arisu e um ex-barman com grande lealdade ao seu grupo. Ele é forte e corajoso, disposto a fazer qualquer coisa para garantir que seus amigos sobrevivam aos jogos de Borderland.</p>
-                                    </div>
-                                </div>
-                            </div>
-                    
-                            <div class="col">
-                                <div class="card h-100">
-                                    <img src="img/sho-aoyagi.png" class="card-img-top" alt="Sho Aoyagi">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Sho Aoyagi</h5>
-                                        <p class="card-text">Personagem: Aguni Morizono</p>
-                                        <p>Aguni é um líder frio e forte em Borderland, um ex-soldado que carrega traumas de seu passado. Ele comanda um grupo violento na Praia e se torna uma figura de grande poder nos jogos.</p>
-                                    </div>
-                                </div>
-                            </div>
-                    
-                            <div class="col">
-                                <div class="card h-100">
-                                    <img src="img/riisa-naka.webp" class="card-img-top" alt="Riisa Naka">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Riisa Naka</h5>
-                                        <p class="card-text">Personagem: Mira Kano</p>
-                                        <p>Mira é uma das figuras mais misteriosas de Borderland, apresentando-se como a "mestre dos jogos". Ela tem uma mente astuta e manipula os eventos de Borderland a seu favor, tornando-se uma antagonista essencial da história.</p>
-                                    </div>
-                                </div>
-                            </div>
-                    
-                            <div class="col">
-                                <div class="card h-100">
-                                    <img src="img/nobuaki-kaneko.jpg" class="card-img-top" alt="Nobuaki Kaneko">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Nobuaki Kaneko</h5>
-                                        <p class="card-text">Personagem: Takeru Danma (Hatter)</p>
-                                        <p>Hatter é o carismático e enigmático líder da Praia, uma utopia temporária dentro de Borderland. Sua busca pelo poder e desejo de encontrar uma saída o levam a tomar decisões arriscadas, tornando-o uma figura central nos jogos.</p>
-                                    </div>
-                                </div>
-                            </div>
-                    
-                            <div class="col">
-                                <div class="card h-100">
-                                    <img src="img/dori-sakurada.jpg" class="card-img-top" alt="Dori Sakurada">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Dori Sakurada</h5>
-                                        <p class="card-text">Personagem: Suguru Niragi</p>
-                                        <p>Niragi é um antagonista cruel e imprevisível. Ele é um dos membros mais violentos da Praia, movido por sadismo e sede de poder. Seu comportamento explosivo o torna uma ameaça constante para os outros competidores.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card h-100">
-                                    <img src="img/elenco.jpg" class="card-img-top" alt="Imagem aleatória">
-                                    <div class="card-body">
-                                        <h5 class="card-title">+ 20 atores</h5>
-                                        <p class="card-text">Confira o elenco completo de Alice in Borderland no site da Netflix.</p>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="row row-cols-1 row-cols-md-4 g-4" id="serieElenco">
                         </div>
                     </div>
                     
-
                     <h2 class="mt-3">Temporadas e Episódios:</h2>
                     <hr>
 
-                    <div class="col-12">
+                    <div class="col-12" id="serieTemporadas">
                         <div class="accordion" id="accordionTemp1">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="heading1">

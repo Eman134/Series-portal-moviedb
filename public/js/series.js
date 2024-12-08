@@ -3,6 +3,8 @@ $(document).ready(function() {
     const API_URL = 'http://localhost:3000/api';
     const FAVORITES_URL = 'http://localhost:3000/db/series_preferidas';
     const USER_ID = 1; // Substituir pelo ID real do usuário
+    const mapeamentoGeneros_cores = {};
+
 
     function updateCarousel() {
         $.ajax({
@@ -41,39 +43,36 @@ $(document).ready(function() {
         });
     }
 
-    const mapeamentoGeneros_cores = {};
+    function getStars(vote_average) {
+        const fullStars = Math.floor(vote_average / 2);
+        const halfStar = vote_average % 2 >= 1 ? 1 : 0;
+        const emptyStars = 5 - fullStars - halfStar;
+        
+        let starsHTML = '';
+        for (let i = 0; i < fullStars; i++) {
+            starsHTML += '<i class="fas fa-star text-warning"></i>';
+        }
+        if (halfStar) {
+            starsHTML += '<i class="fas fa-star-half-alt text-warning"></i>';
+        }
+        for (let i = 0; i < emptyStars; i++) {
+            starsHTML += '<i class="far fa-star text-warning"></i>';
+        }
+        return starsHTML;
+    }
+
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }   
 
     function getCardHTML(serie) {
-
-        function getRandomColor() {
-            const letters = '0123456789ABCDEF';
-            let color = '#';
-            for (let i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }        
-    
-        function getStars(vote_average) {
-            const fullStars = Math.floor(vote_average / 2);
-            const halfStar = vote_average % 2 >= 1 ? 1 : 0;
-            const emptyStars = 5 - fullStars - halfStar;
-            
-            let starsHTML = '';
-            for (let i = 0; i < fullStars; i++) {
-                starsHTML += '<i class="fas fa-star text-warning"></i>';
-            }
-            if (halfStar) {
-                starsHTML += '<i class="fas fa-star-half-alt text-warning"></i>';
-            }
-            for (let i = 0; i < emptyStars; i++) {
-                starsHTML += '<i class="far fa-star text-warning"></i>';
-            }
-            return starsHTML;
-        }
-
-        if (serie.genres_names === undefined) {
-            serie.genres_names = [];
+        if (serie.genres === undefined) {
+            serie.genres = [];
         }
 
         const cardHTML = `
@@ -89,12 +88,12 @@ $(document).ready(function() {
                                         <small>${serie.vote_average.toFixed(1)} (${serie.vote_count} avaliações)</small>
                                     </div>
                                     <div class="d-flex p-1 flex-wrap gap-2">
-                                        ${serie.genres_names.map(name => {
-                                            if (!mapeamentoGeneros_cores[name]) {
-                                                mapeamentoGeneros_cores[name] = getRandomColor();
+                                        ${serie.genres.map(genre => {
+                                            if (!mapeamentoGeneros_cores[genre.name]) {
+                                                mapeamentoGeneros_cores[genre.name] = getRandomColor();
                                             }
-                                            const cor = mapeamentoGeneros_cores[name];
-                                            return `<span class="badge" style="background-color: ${cor};">${name}</span>`;
+                                            const cor = mapeamentoGeneros_cores[genre.name];
+                                            return `<span class="badge" style="background-color: ${cor};">${genre.name}</span>`;
                                         }).join('')}
                                     </div>
                                     <p class="card-text">${serie.overview}</p>
@@ -104,7 +103,7 @@ $(document).ready(function() {
                                         <i class="far fa-heart fs-5"></i>
                                         Favoritar
                                     </a>
-                                    <a class="btn d-block mx-auto" href="serie.html">
+                                    <a class="btn d-block mx-auto" href="serie.html?id=${serie.id}">
                                         <i class="fas fa-info-circle fs-5"></i>
                                         Detalhes
                                     </a>
@@ -120,7 +119,7 @@ $(document).ready(function() {
             url: `${API_URL}/series-populares`,
             method: 'GET',
             success: function(response) {
-                const series = response.results.slice(0, 12);
+                const series = response.results.slice(0, 6);
                 series.forEach((serie) => {
                     const cardHTML = getCardHTML(serie);
                     $('#novidadesindex').append(cardHTML);
@@ -298,6 +297,122 @@ $(document).ready(function() {
         });
     }
 
+    function detalhesSerie() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const serieId = urlParams.get('id');
+        $.ajax({
+            url: `${API_URL}/serie/${serieId}`,
+            method: 'GET',
+            success: function(response) {
+                const serie = response;
+                console.log(serie);
+                const img = `https://image.tmdb.org/t/p/w300${serie.poster_path}`
+                $('#serieImg').attr('src', img);
+                $('#serieNome').text(serie.name);
+                
+                $('#serieStars').html(`
+                    <div class="me-2">
+                        ${getStars(serie.vote_average)}
+                    </div>
+                    <small>${serie.vote_average.toFixed(1)} (${serie.vote_count} avaliações)</small>
+                `);
+                
+                $('#serieGenres').html(`
+                    <div class="d-flex p-1 flex-wrap gap-2">
+                        ${serie.genres.map(genre => {
+                            if (!mapeamentoGeneros_cores[genre.name]) {
+                                mapeamentoGeneros_cores[genre.name] = getRandomColor();
+                            }
+                            const cor = mapeamentoGeneros_cores[genre.name];
+                            return `<span class="badge" style="background-color: ${cor};">${genre.name}</span>`;
+                        }).join('')}
+                    </div>
+                `);
+
+                // #serieAudioOriginal e #serieDataLancamento
+                $('#serieAudioOriginal').text(`Áudio original: ${serie.original_language}`);
+                $('#serieDataLancamento').text(`Data de lançamento: ${serie.first_air_date.split('-').reverse().join('/')}`);
+                
+                $('#serieSinopse').text(serie.overview);
+
+                        /*<a class="btn d-block mx-auto favorite-btn" data-id="${serie.id}" data-name="${serie.name}">
+                                        <i class="far fa-heart fs-5"></i>
+                                        Favoritar
+                                    </a>*/
+
+                $('#favoritarSerie').html(`
+                    <a class="btn d-block mx-auto favorite-btn" data-id="${serie.id}" data-name="${serie.name}" id="favoritarSerie">
+                        <i class="far fa-heart fs-5"></i>
+                        Favoritar
+                    </a>
+                `);
+
+                $('#serieElenco').empty();
+                
+                serie.cast.forEach(cast => {
+                    const img = cast.profile_path ? `https://image.tmdb.org/t/p/w300${cast.profile_path}` : 'https://via.placeholder.com/300';
+                    const card = `
+                        <div class="col">
+                            <div class="card h-100">
+                                <img src="${img}" class="card-img-top" alt="${cast.name}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${cast.name}</h5>
+                                    <p class="card-text">Personagem: ${cast.character}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    $('#serieElenco').append(card);
+                });
+
+                $('#serieTemporadas').empty();
+                serie.seasons.forEach(season => {
+
+                    const seasonurl = `${API_URL}/serie/${serieId}/temporada/${season.season_number}`;
+
+                    $.ajax({
+                        url: seasonurl,
+                        method: 'GET',
+                        success: function(response) {
+                            const season = response;
+                            const accordion = `
+                                <div class="accordion" id="accordionTemp${season.season_number}">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="heading${season.season_number}">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${season.season_number}" aria-expanded="true" aria-controls="collapse${season.season_number}">
+                                                Temporada ${season.season_number}
+                                            </button>
+                                        </h2>
+                                        <div id="collapse${season.season_number}" class="accordion-collapse collapse" aria-labelledby="heading${season.season_number}" data-bs-parent="#accordionTemp${season.season_number}">
+                                            <div class="accordion-body">
+                                                <ul class="list-group">
+                                                    ${season.episodes.map(episode => {
+                                                        return `
+                                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                ${episode.name}
+                                                                <span class="badge bg-primary rounded-pill">${episode.runtime ? episode.runtime + 'min' : 'Duração desconhecida'}</span>
+                                                            </li>
+                                                        `;
+                                                    }).join('')}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            $('#serieTemporadas').append(accordion);
+                        }
+                    });
+                });
+
+            },
+            error: function() {
+                console.error('Erro ao carregar a série');
+            }
+        })
+
+    }
+
     $('#searchForm').on('submit', function(event) {
         event.preventDefault();
         fetchSeriesWithFilters();
@@ -309,6 +424,11 @@ $(document).ready(function() {
     });
 
     fetchSeriesWithFilters();
+
+    // só chamar a função se estiver na página de detalhes
+    if ($('#serieImg').length > 0) {
+        detalhesSerie();
+    }
 
     updateCarousel();
     mostrarNovidades();

@@ -166,10 +166,10 @@ server.get('/api/series-populares', async (req, res) => {
         const response = await axios.request(options);
         const data = response.data;
         await data.results.forEach(async serie => {
-            serie.genres_names = [];
-            serie.genre_ids.forEach(async genreId => {
+            serie.genres = []
+            await serie.genre_ids.forEach(async genreId => {
                 const nome = await nomeGenero(genreId);
-                serie.genres_names.push(nome);
+                serie.genres.push({ id: genreId, name: nome });
             })
         });
         res.json(data);
@@ -198,10 +198,50 @@ server.get('/api/serie/:id', async (req, res) => {
     };
     try {
         const response = await axios.request(options);
+
+        const elenco = await axios.request({
+            method: 'GET',
+            url: `${THE_MOVIE_DB_API_URL}/tv/${id}/credits?language=pt-BR`,
+            headers: {
+              accept: 'application/json',
+              Authorization: `Bearer ${ACCESS_TOKEN}`,
+            }
+        });
+
+        response.data.cast = elenco.data.cast;
+        response.data.crew = elenco.data.crew;
+
         res.json(response.data);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Erro ao recuperar a série' });
+    }
+});
+
+// https://api.themoviedb.org/3/tv/{series_id}/season/{season_number}
+// teste de rota http://localhost:3000/api/serie/1/temporada/1
+server.get('/api/serie/:id/temporada/:temporada', async (req, res) => {
+    const id = req.params.id;
+    const temporada = req.params.temporada;
+    if (!id || id === '' || !temporada || temporada === '') {
+        res.status(400).json({ message: 'O id da série e o número da temporada são obrigatórios' });
+        return;
+    }
+    console.log(`Recuperando a temporada ${temporada} da série com id ${id}`);
+    const options = {
+        method: 'GET',
+        url: `${THE_MOVIE_DB_API_URL}/tv/${id}/season/${temporada}?language=pt-BR`,
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        }
+    };
+    try {
+        const response = await axios.request(options);
+        res.json(response.data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao recuperar a temporada' });
     }
 });
 
