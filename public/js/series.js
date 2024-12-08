@@ -334,18 +334,14 @@ $(document).ready(function() {
                 $('#serieDataLancamento').text(`Data de lançamento: ${serie.first_air_date.split('-').reverse().join('/')}`);
                 
                 $('#serieSinopse').text(serie.overview);
-
-                        /*<a class="btn d-block mx-auto favorite-btn" data-id="${serie.id}" data-name="${serie.name}">
-                                        <i class="far fa-heart fs-5"></i>
-                                        Favoritar
-                                    </a>*/
-
                 $('#favoritarSerie').html(`
                     <a class="btn d-block mx-auto favorite-btn" data-id="${serie.id}" data-name="${serie.name}" id="favoritarSerie">
                         <i class="far fa-heart fs-5"></i>
                         Favoritar
                     </a>
                 `);
+
+                loadFavorites();
 
                 $('#serieElenco').empty();
                 
@@ -367,9 +363,7 @@ $(document).ready(function() {
 
                 $('#serieTemporadas').empty();
                 serie.seasons.forEach(season => {
-
                     const seasonurl = `${API_URL}/serie/${serieId}/temporada/${season.season_number}`;
-
                     $.ajax({
                         url: seasonurl,
                         method: 'GET',
@@ -403,7 +397,14 @@ $(document).ready(function() {
                             $('#serieTemporadas').append(accordion);
                         }
                     });
-                });
+                }).then(() => {
+                    $('#serieTemporadas').html($('#serieTemporadas').children().sort((a, b) => {
+                        const numA = $(a).find('.accordion-button').text().split(' ')[1];
+                        const numB = $(b).find('.accordion-button').text().split(' ')[1];
+                        return numA - numB;
+                    }))
+                })
+                
 
             },
             error: function() {
